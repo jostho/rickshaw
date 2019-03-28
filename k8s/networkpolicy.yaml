@@ -1,0 +1,60 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: rickshaw-db
+spec:
+  podSelector:
+    matchLabels:
+      app: rickshaw
+      tier: db
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: rickshaw
+    - namespaceSelector:
+        matchLabels:
+          role: monitoring
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: rickshaw-app
+spec:
+  podSelector:
+    matchLabels:
+      app: rickshaw
+      tier: app
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: rickshaw
+    - namespaceSelector:
+        matchLabels:
+          role: monitoring
+    - namespaceSelector:
+        matchLabels:
+          role: kube-system
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: rickshaw-web
+spec:
+  podSelector:
+    matchLabels:
+      app: rickshaw
+      tier: web
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: rickshaw
+    - namespaceSelector:
+        matchLabels:
+          role: monitoring
+    - namespaceSelector:
+        matchLabels:
+          role: kube-system
+---

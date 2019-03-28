@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rickshaw-app
+  labels:
+    app: rickshaw
+spec:
+  selector:
+    app: rickshaw
+    tier: app
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rickshaw-app
+  labels:
+    app: rickshaw
+spec:
+  selector:
+    matchLabels:
+      app: rickshaw
+      tier: app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: rickshaw
+        tier: app
+    spec:
+      containers:
+      - name: ecgo
+        image: registry:5000/api:v0.1.0
+        env:
+        - name: APP_DB_HOST
+          value: rickshaw-db
+        - name: APP_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: rickshaw-config
+              key: app_dbname
+        - name: APP_DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: rickshaw-config
+              key: app_username
+        - name: APP_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rickshaw-secret
+              key: app_password
+        ports:
+        - containerPort: 8000
+          name: http
+        resources:
+          requests:
+            memory: 16Mi
+            cpu: 100m
+          limits:
+            memory: 32Mi
+            cpu: 100m
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 1
+          httpGet:
+            path: /healthcheck?type=liveness
+            port: http

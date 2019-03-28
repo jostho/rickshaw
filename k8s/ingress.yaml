@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rickshaw-web
+  labels:
+    app: rickshaw
+spec:
+  rules:
+  - host: rickshaw-web.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: rickshaw-web
+          servicePort: http
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rickshaw-app
+  labels:
+    app: rickshaw
+spec:
+  rules:
+  - host: rickshaw-app.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: rickshaw-app
+          servicePort: http
