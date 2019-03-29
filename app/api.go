@@ -31,17 +31,17 @@ var gitCommit string
 var readTimeout = 10
 var writeTimeout = 300
 
-const countSql = "SELECT COUNT(*) AS count FROM employees"
-
 const envDbHost = "APP_DB_HOST"
 const envDbName = "APP_DB_NAME"
 const envDbUser = "APP_DB_USER"
 const envDbPassword = "APP_DB_PASSWORD"
 
+const countSql = "SELECT COUNT(*) AS count FROM employees"
+const countHeader = "X-Total-Count"
+
 const welcome = "Welcome to api server\n"
 const messageOk = "OK"
 const messageNotSupported = "NotSupported"
-
 
 func printVersion() {
     fmt.Printf("api %s\n", versionNumber)
@@ -98,7 +98,9 @@ func countHandler(w http.ResponseWriter, req *http.Request) {
                 output = fmt.Sprintf("%v", err)
             } else {
                 statusCode = http.StatusOK
-                output = fmt.Sprintf("%d", count)
+                output = messageOk
+                // set the count in response header
+                w.Header().Set(countHeader, fmt.Sprintf("%d", count))
             }
         }
     }
@@ -147,7 +149,7 @@ func main() {
 
     handler := http.NewServeMux()
     handler.HandleFunc("/", indexHandler)
-    handler.HandleFunc("/api/employees/count", countHandler)
+    handler.HandleFunc("/api/employees", countHandler)
     handler.HandleFunc("/healthcheck", healthcheckHandler)
     handler.Handle("/metrics", promhttp.Handler())
 
