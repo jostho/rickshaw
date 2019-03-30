@@ -10,9 +10,7 @@ spec:
     tier: app
   ports:
   - name: http
-    protocol: TCP
     port: 80
-    targetPort: 8000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,6 +33,7 @@ spec:
       containers:
       - name: ecgo
         image: registry:5000/api:v0.1.0
+        args: [ "--port", "80" ]
         env:
         - name: APP_DB_HOST
           value: rickshaw-db
@@ -54,7 +53,7 @@ spec:
               name: rickshaw-secret
               key: app_password
         ports:
-        - containerPort: 8000
+        - containerPort: 80
           name: http
         resources:
           requests:

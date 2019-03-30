@@ -15,7 +15,7 @@ APP_NAME := api
 CONTAINER := $(APP_NAME)-scratch-container-1
 IMAGE_NAME := jostho/$(APP_NAME):$(VERSION)
 IMAGE_BINARY_PATH := /bin/$(BINARY)
-PORT := 8000
+PORT := 80
 
 check:
 	$(GO) version
