@@ -4,6 +4,7 @@ metadata:
   name: rickshaw-db
   labels:
     app: rickshaw
+    tier: db
 spec:
   ports:
     - port: 3306

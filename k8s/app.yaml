@@ -4,6 +4,7 @@ metadata:
   name: rickshaw-app
   labels:
     app: rickshaw
+    tier: app
 spec:
   selector:
     app: rickshaw
@@ -31,7 +32,7 @@ spec:
         tier: app
     spec:
       containers:
-      - name: ecgo
+      - name: api
         image: registry:5000/api:v0.1.0
         args: [ "--port", "80" ]
         env:

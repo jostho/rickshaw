@@ -4,6 +4,7 @@ metadata:
   name: rickshaw-web
   labels:
     app: rickshaw
+    tier: web
 spec:
   selector:
     app: rickshaw
