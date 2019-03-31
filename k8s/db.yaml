@@ -46,6 +46,13 @@ spec:
         app: rickshaw
         tier: db
     spec:
+      initContainers:
+      - name: volume-mount-hack
+        image: alpine:3.9
+        command: ["/bin/sh", "-c", "chown -R 1001:1001 /var/lib/mysql"]
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
       containers:
       - image: percona:8.0
         name: mysql
