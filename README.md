@@ -32,11 +32,11 @@ Verify the built image
 
 Push the image to the private registry
 
-    buildah push --tls-verify=false jostho/api:v0.1.0 docker://registry:5000/api:v0.1.0
+    buildah push --tls-verify=false jostho/api:v0.1.0 docker://registry:5000/jostho/api:v0.1.0
 
 Verify the image in the registry
 
-    skopeo inspect --tls-verify=false docker://registry:5000/api:v0.1.0
+    skopeo inspect --tls-verify=false docker://registry:5000/jostho/api:v0.1.0
 
 ## Deploy
 
